@@ -28,7 +28,6 @@
             background: radial-gradient(circle at top, #ffd6ec, #ffb6d9, #ff9fcb);
         }
 
-        /* 💖 HEARTS BACKGROUND */
         .hearts {
             position: fixed;
             inset: 0;
@@ -41,11 +40,12 @@
             pointer-events: none;
             animation: floatUp linear forwards;
             opacity: 0.9;
+            filter: drop-shadow(0 0 0.5rem rgba(255, 255, 255, 0.8));
         }
 
         @keyframes floatUp {
             0% {
-                transform: translateY(120vh) scale(0.6);
+                transform: translateY(120vh) translateX(0) rotate(0deg) scale(0.6);
                 opacity: 0;
             }
 
@@ -54,55 +54,60 @@
             }
 
             100% {
-                transform: translateY(-130vh) scale(1.4);
+                transform: translateY(-130vh) translateX(calc(-6rem + 12rem * var(--drift))) rotate(360deg) scale(1.4);
                 opacity: 0;
             }
         }
 
-        /* 💖 CARD */
         .card {
             width: 100%;
             max-width: 42rem;
             min-height: 42rem;
-
             background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(0.4rem);
-
             border: 0.25rem solid rgba(255, 255, 255, 0.5);
             border-radius: 2.5rem;
-
             position: relative;
             z-index: 10;
-
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-
             padding: 2rem;
             text-align: center;
+            box-shadow: 0 0.6rem 2.5rem rgba(255, 105, 180, 0.4), inset 0 0 1.2rem rgba(255, 255, 255, 0.4);
+        }
 
-            box-shadow: 0 0.6rem 2.5rem rgba(255, 105, 180, 0.4);
+        .sparkles {
+            position: absolute;
+            top: 1rem;
+            right: 1.2rem;
+            font-size: 1.5rem;
+            color: white;
         }
 
         h1 {
             font-size: clamp(2rem, 4vw, 3rem);
             color: #ff2d7a;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
+            text-shadow: 0.12rem 0.12rem white;
+            line-height: 1.3;
         }
 
         .cute-text {
-            font-size: clamp(1rem, 3vw, 1.3rem);
             color: #ff5c9f;
+            font-size: clamp(1rem, 3vw, 1.4rem);
             margin-bottom: 1rem;
+            line-height: 1.5;
         }
 
         img {
             width: 70%;
             max-width: 18rem;
-            border-radius: 1.5rem;
-            border: 0.3rem solid white;
+            border-radius: 1.6rem;
+            border: 0.35rem solid white;
             margin-bottom: 2rem;
+            box-shadow: 0 0.6rem 1.6rem rgba(255, 105, 180, 0.3);
         }
 
         .buttons {
@@ -116,9 +121,11 @@
             border: none;
             padding: 1rem 2rem;
             border-radius: 999rem;
-            font-size: 1.3rem;
-            font-weight: bold;
             cursor: pointer;
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: bold;
+            transition: 0.25s ease;
+            box-shadow: 0 0.5rem 1.2rem rgba(0, 0, 0, 0.15);
         }
 
         #yesBtn {
@@ -128,6 +135,10 @@
             top: 3rem;
         }
 
+        #yesBtn:hover {
+            transform: scale(1.1);
+        }
+
         #noBtn {
             background: white;
             color: #ff4f9a;
@@ -135,64 +146,91 @@
             top: 3rem;
         }
 
-        /* 💥 SHATTER */
-        .shatter {
-            animation: shatter 0.6s forwards;
+        .explosion {
+            animation: boom 0.8s forwards;
         }
 
-        @keyframes shatter {
+        @keyframes boom {
             0% {
-                transform: scale(1);
+                transform: scale(1) rotate(0deg);
                 opacity: 1;
             }
 
-            100% {
-                transform: scale(0) rotate(200deg);
-                opacity: 0;
-            }
-        }
-
-        /* 💖 KISS POP */
-        .kiss-pop {
-            position: fixed;
-            font-size: 2rem;
-            animation: kissPop 0.8s forwards;
-            pointer-events: none;
-            z-index: 999;
-        }
-
-        @keyframes kissPop {
-            0% {
-                transform: scale(0);
-                opacity: 1;
-            }
-
-            50% {
-                transform: scale(1.6);
+            40% {
+                transform: scale(1.7) rotate(20deg);
             }
 
             100% {
-                transform: scale(0.8) translateY(-6rem);
+                transform: scale(0) rotate(180deg);
                 opacity: 0;
             }
         }
 
         .final-message {
             margin-top: 1rem;
-            font-size: 1.5rem;
+            font-size: clamp(1.3rem, 3vw, 2rem);
             color: #ff2d7a;
             animation: pulse 1s infinite;
         }
 
         @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
             50% {
-                transform: scale(1.1);
+                transform: scale(1.08);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .kiss {
+            position: absolute;
+            font-size: 2rem;
+            pointer-events: none;
+            animation: pop 1s forwards;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(0) translateY(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1.8) translateY(-7rem);
+                opacity: 0;
             }
         }
 
         @media (max-width: 40rem) {
             html {
                 font-size: 14px;
+            }
+
+            .card {
+                min-height: auto;
+                padding: 2rem 1.2rem;
+                border-radius: 2rem;
+            }
+
+            .buttons {
+                height: 10rem;
+            }
+
+            #yesBtn {
+                left: 10%;
+            }
+
+            #noBtn {
+                right: 10%;
+            }
+
+            img {
+                width: 85%;
             }
         }
     </style>
@@ -202,13 +240,20 @@
 
     <div class="hearts"></div>
 
-    <div class="card">
+    <div class="card" id="card">
 
-        <h1>Will you go on a date with me? 💌</h1>
+        <div class="sparkles">✨💖✨</div>
 
-        <div class="cute-text">hii cutie pie 💕 you’re adorable 🥺</div>
+        <div class="cute-text">
+            hiiii cutie pie 💕 <br>
+            ur literally the prettiest human everrr 🥺🎀
+        </div>
 
-        <img src="cute.gif" />
+        <h1>
+            Will you go on a date with me? 💌
+        </h1>
+
+        <img src="cute.gif" alt="Cute Cat" />
 
         <div class="buttons">
             <button id="yesBtn">YES 💖</button>
@@ -220,149 +265,102 @@
     </div>
 
     <script>
-
-        /* 💖 SOUND */
-        const sounds = {
-            pop: new Audio("https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"),
-            success: new Audio("https://assets.mixkit.co/active_storage/sfx/3015/3015-preview.mp3"),
-            boop: new Audio("https://assets.mixkit.co/active_storage/sfx/270/270-preview.mp3")
-        };
-
-        function play(s) {
-            try {
-                sounds[s].currentTime = 0;
-                sounds[s].play();
-            } catch { }
-        }
-
-        /* 📱 VIBRATION */
-        function vibrate(v) {
-            if (navigator.vibrate) navigator.vibrate(v);
-        }
-
         const noBtn = document.getElementById("noBtn");
         const yesBtn = document.getElementById("yesBtn");
+        const card = document.getElementById("card");
         const finalMessage = document.getElementById("finalMessage");
 
         let moveCount = 0;
-        let broken = false;
 
-        /* 💥 NO BUTTON */
-        function moveNo() {
-
-            if (broken) return;
-
+        noBtn.addEventListener("mouseenter", () => {
             moveCount++;
 
-            play("boop");
-            vibrate(20);
+            if (moveCount >= 3) {
+                noBtn.classList.add("explosion");
+                createCuteExplosion();
 
-            if (moveCount >= 4) {
-
-                broken = true;
-
-                noBtn.classList.add("shatter");
-
-                play("pop");
-                vibrate([50, 30, 50]);
-
-                createShatter();
-
-                setTimeout(() => noBtn.remove(), 600);
+                setTimeout(() => {
+                    noBtn.remove();
+                }, 700);
 
                 yesBtn.style.left = "50%";
                 yesBtn.style.top = "50%";
-                yesBtn.style.transform = "translate(-50%,-50%) scale(1.5)";
-
-                finalMessage.innerHTML = "you only have YES now cutie 💘";
-
+                yesBtn.style.transform = "translate(-50%, -50%) scale(1.5)";
+                finalMessage.innerHTML = "hehehehe now u only have one choice cutie 💘";
                 return;
             }
 
-            noBtn.style.left = Math.random() * 60 + "%";
-            noBtn.style.top = Math.random() * 60 + "%";
-        }
+            const maxX = 520;
+            const maxY = 120;
 
-        noBtn.addEventListener("mouseenter", moveNo);
-        noBtn.addEventListener("click", moveNo);
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
 
-        /* 💥 SHATTER EFFECT */
-        function createShatter() {
-
-            for (let i = 0; i < 40; i++) {
-
-                const el = document.createElement("div");
-                el.className = "kiss-pop";
-
-                el.innerHTML = ["💖", "💔", "✨", "🎀", "💥"][Math.floor(Math.random() * 5)];
-
-                el.style.left = noBtn.offsetLeft + "px";
-                el.style.top = noBtn.offsetTop + "px";
-
-                el.style.transform =
-                    `translate(${(Math.random() - 0.5) * 400}px,
-                       ${(Math.random() - 0.5) * 400}px)`;
-
-                document.body.appendChild(el);
-
-                setTimeout(() => el.remove(), 800);
-            }
-        }
-
-        /* 💖 YES BUTTON */
-        yesBtn.addEventListener("click", () => {
-
-            play("success");
-            vibrate([80, 50, 80]);
-
-            finalMessage.innerHTML = "💖 YAY CUTIE 💖";
-
-            for (let i = 0; i < 25; i++) {
-
-                const kiss = document.createElement("div");
-                kiss.className = "kiss-pop";
-
-                kiss.innerHTML = ["💖", "💋", "💕", "🎀", "✨"][Math.floor(Math.random() * 5)];
-
-                kiss.style.left = Math.random() * 100 + "vw";
-                kiss.style.top = Math.random() * 100 + "vh";
-
-                document.body.appendChild(kiss);
-
-                setTimeout(() => kiss.remove(), 800);
-            }
-
-            document.body.style.background =
-                "radial-gradient(circle at top, #fff0f6, #ffb6d9, #ff4f9a)";
+            noBtn.style.left = randomX + "px";
+            noBtn.style.top = randomY + "px";
+            noBtn.style.right = "auto";
         });
 
-        /* 💖 FLOATING HEARTS */
-        function hearts() {
+        noBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+        });
 
-            const box = document.querySelector(".hearts");
+        yesBtn.addEventListener("click", () => {
+            card.innerHTML = `
+                <h1 style="font-size:60px;">
+                    YAYYYYY 💖💖💖
+                </h1>
+                <img src="cute.gif" style="width:320px; border-radius:30px; margin-top:20px;" />
+                <div class="final-message">
+                    omg cutie!! best date everrr 🌸💕✨
+                </div>
+            `;
+        });
 
-            setInterval(() => {
+        function createCuteExplosion() {
+            for (let i = 0; i < 30; i++) {
+                const kiss = document.createElement("div");
+                kiss.className = "kiss";
+                const emojis = ["💖", "✨", "💘", "🎀", "💕", "🌸"];
+                kiss.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+                kiss.style.left = noBtn.offsetLeft + "px";
+                kiss.style.top = noBtn.offsetTop + "px";
+                kiss.style.transform = `translate(${Math.random() * 300 - 150}px, ${Math.random() * 300 - 150}px)`;
+                card.appendChild(kiss);
 
-                for (let i = 0; i < 8; i++) {
-
-                    const h = document.createElement("div");
-                    h.className = "heart";
-
-                    h.innerHTML = ["💖", "💕", "💘", "🎀"][Math.floor(Math.random() * 4)];
-
-                    h.style.left = Math.random() * 100 + "vw";
-                    h.style.fontSize = (1 + Math.random() * 2) + "rem";
-
-                    box.appendChild(h);
-
-                    setTimeout(() => h.remove(), 8000);
-                }
-
-            }, 150);
+                setTimeout(() => {
+                    kiss.remove();
+                }, 1000);
+            }
         }
 
-        hearts();
+        function createFloatingHearts() {
+            const heartsContainer = document.querySelector(".hearts");
+            const emojis = ["💖", "💕", "💘", "💗", "💓", "🎀", "✨", "🌸", "🩷", "💞"];
 
+            setInterval(() => {
+                for (let i = 0; i < 8; i++) {
+                    const heart = document.createElement("div");
+                    heart.className = "heart";
+                    heart.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+                    heart.style.left = Math.random() * 100 + "vw";
+                    const size = 20 + Math.random() * 50;
+                    heart.style.fontSize = size + "px";
+                    const duration = 4 + Math.random() * 6;
+                    heart.style.animationDuration = duration + "s";
+                    heart.style.setProperty("--drift", Math.random());
+                    heart.style.opacity = Math.random();
+                    heart.style.filter = `blur(${Math.random() * 1.5}px) drop-shadow(0 0 14px rgba(255,255,255,0.9))`;
+                    heartsContainer.appendChild(heart);
+
+                    setTimeout(() => {
+                        heart.remove();
+                    }, duration * 1000);
+                }
+            }, 120);
+        }
+
+        createFloatingHearts();
     </script>
 
 </body>
