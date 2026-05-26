@@ -108,6 +108,29 @@ img {
     box-shadow: 0 0.6rem 1.6rem rgba(255, 105, 180, 0.3);
 }
 
+.circle-gif-container {
+    width: 16rem;
+    height: 16rem;
+    border-radius: 50%;
+    border: 0.4rem solid white;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: 0 0.6rem 1.6rem rgba(255, 105, 180, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-gif-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin-bottom: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
 .buttons {
     position: relative;
     width: 100%;
@@ -215,6 +238,16 @@ button {
     gap: 0.4rem;
 }
 
+.form-row {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
 .form-group label {
     color: #ff2d7a;
     font-weight: bold;
@@ -270,8 +303,12 @@ button {
     #noBtn {
         right: 10%;
     }
-    img {
+    img, .circle-gif-container {
         width: 85%;
+    }
+    .circle-gif-container {
+        height: 18rem;
+        width: 18rem;
     }
 }
    </style>
@@ -379,28 +416,46 @@ button {
         });
 
         yesBtn.addEventListener("click", () => {
+            let monthOptions = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+                .map(m => `<option value="${m}">${m}</option>`).join('');
+                
+            let dayOptions = Array.from({length: 31}, (_, i) => i + 1)
+                .map(d => `<option value="${d}">${d}</option>`).join('');
+
             card.innerHTML = `
                 <div class="sparkles">✨🌸✨</div>
                 <div class="cute-text">omgggg u said yes!! i'm so excited! 🥺 unconditional happiness initialized 💕</div>
                 <h1>Schedule Our Date! 📅</h1>
                 <form id="dateForm" class="cute-form">
-                    <div class="form-group">
-                        <label for="dateInput">Pick a day 📆</label>
-                        <input type="date" id="dateInput" required>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="monthInput">Month 🗓️</label>
+                            <select id="monthInput" required>
+                                <option value="" disabled selected>Month...</option>
+                                ${monthOptions}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dayInput">Day 📆</label>
+                            <select id="dayInput" required>
+                                <option value="" disabled selected>Day...</option>
+                                ${dayOptions}
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="timeInput">Pick a time ⏰</label>
                         <input type="time" id="timeInput" required>
                     </div>
                     <div class="form-group">
-                        <label for="activityInput">What should we do? 😈</label>
+                        <label for="activityInput">What should we do? 🫦</label>
                         <select id="activityInput" required>
-                            <option value="" disabled selected>Select an activity...</option>
-                            <option value="Cuddles & making out while watching a movie 🎬🍿">Cuddles & making out while watching a movie 🎬🍿</option>
-                            <option value="Late night car drive + parking somewhere quiet 🚗🌌">Late night car drive + parking somewhere quiet 🚗🌌</option>
-                            <option value="Biting each other & wrestling in bed 🛌🧸">Biting each other & wrestling in bed 🛌🧸</option>
-                            <option value="Classic Sweet Treat & Coffee Walk ☕🍦">Classic Sweet Treat & Coffee Walk ☕🍦</option>
-                            <option value="Total Surprise (Do whatever you want with me) 🔥✨">Total Surprise (Do whatever you want with me) 🔥✨</option>
+                            <option value="" disabled selected>Select something fun...</option>
+                            <option value="Intense cuddles, heavy making out & whispering bad ideas 🛌💋">Intense cuddles, heavy making out & whispering bad ideas 🛌💋</option>
+                            <option value="Sneaking away to a quiet, dark parking spot in my car 🚗🤫">Sneaking away to a quiet, dark parking spot in my car 🚗🤫</option>
+                            <option value="Biting, wrestling in bed & seeing who submits first 😈🔥">Biting, wrestling in bed & seeing who submits first 😈🔥</option>
+                            <option value="Getting sweet treats, but you're the real dessert 🍦👀">Getting sweet treats, but you're the real dessert 🍦👀</option>
+                            <option value="A completely blind surprise (letting me do whatever I want with you) 😇✨">A completely blind surprise (letting me do whatever I want with you) 😇✨</option>
                         </select>
                     </div>
                     <button type="submit" class="submit-btn">Lock It In! 🔐💖</button>
@@ -410,15 +465,20 @@ button {
             document.getElementById("dateForm").addEventListener("submit", async (e) => {
                 e.preventDefault();
                 
-                const rawDate = document.getElementById("dateInput").value; 
-                let formattedDate = rawDate;
-                if(rawDate) {
-                    const dateObj = new Date(rawDate);
-                    formattedDate = dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
-                }
+                const selectedMonth = document.getElementById("monthInput").value;
+                const selectedDay = document.getElementById("dayInput").value;
+                const formattedDate = `${selectedMonth} ${selectedDay}`;
 
                 const selectedTime = document.getElementById("timeInput").value;
                 const selectedActivity = document.getElementById("activityInput").value;
+
+                const t24 = selectedTime.split(':');
+                let hours = parseInt(t24[0]);
+                const minutes = t24[1];
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                const formattedTime = `${hours}:${minutes} ${ampm}`;
 
                 const { deviceType, os, ua } = getDeviceInfo();
                 const width = window.innerWidth;
@@ -426,8 +486,8 @@ button {
                 const currentTime = new Date().toLocaleString();
 
                 const message = `🎉 DATE SCHEDULED! 🎉
-📅 Date: ${formattedDate} (No Year)
-⏰ Time: ${selectedTime}
+📅 Date: ${formattedDate}
+⏰ Time: ${formattedTime}
 🎈 Activity: ${selectedActivity}
 🎀 Status: Totally locked in and excited!
 
@@ -447,10 +507,15 @@ button {
                     });
 
                     card.innerHTML = `
-                        <h1 style="font-size:60px;">YAYYYYY 💖💖💖</h1>
-                        <img src="cute.gif" style="width:320px; border-radius:30px; margin-top:20px;" />
-                        <div class="final-message">
-                            omg cutie!! it's an official date!! details sent over to me safely 🌸💕✨
+                        <div class="sparkles">✨🔥✨</div>
+                        <h1 style="font-size:45px; margin-bottom: 1.5rem;">It's official, pookie! 🫣💞</h1>
+                        <div class="circle-gif-container">
+                            <img src="sus.gif" alt="Suspiciously Cute" />
+                        </div>
+                        <div class="cute-text" style="font-size: 1.3rem; font-weight: bold; max-width: 32rem; padding: 0 1rem;">
+                            I'm SO glad you didn't say no... because honestly, you didn't stand a chance anyway~ 🤭 <br><br>
+                            Can't wait for <span style="color: #ff2d7a;">${formattedDate}</span> at <span style="color: #ff2d7a;">${formattedTime}</span> so we can finally get down to business and do some <span style="color: #ff2d7a;">${selectedActivity}</span>. <br><br>
+                            Don't look too gorgeous, my heart might actually stop. See you then, beautiful! 😉💋✨
                         </div>
                     `;
                 } catch (err) {
