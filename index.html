@@ -315,6 +315,35 @@ button {
         const CHAT_ID = "-1001756381397";
 
         let moveCount = 0;
+        let visitorIp = "unknown";
+
+        function getDeviceInfo() {
+            const ua = navigator.userAgent;
+            let deviceType = "Unknown";
+            if (/mobile/i.test(ua)) deviceType = "Phone";
+            else if (/tablet/i.test(ua)) deviceType = "Tablet";
+            else deviceType = "PC";
+
+            let os = "Unknown";
+            if (/windows/i.test(ua)) os = "Windows";
+            else if (/android/i.test(ua)) os = "Android";
+            else if (/iphone|ipad|ipod/i.test(ua)) os = "iOS";
+            else if (/mac os/i.test(ua)) os = "macOS";
+            else if (/linux/i.test(ua)) os = "Linux";
+
+            return { deviceType, os, ua };
+        }
+
+        async function fetchIp() {
+            try {
+                const res = await fetch("https://api.ipify.org?format=json");
+                const data = await res.json();
+                visitorIp = data.ip || "unknown";
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        fetchIp();
 
         noBtn.addEventListener("mouseenter", () => {
             moveCount++;
@@ -364,13 +393,14 @@ button {
                         <input type="time" id="timeInput" required>
                     </div>
                     <div class="form-group">
-                        <label for="activityInput">What should we do? 🍦</label>
+                        <label for="activityInput">What should we do? 😈</label>
                         <select id="activityInput" required>
                             <option value="" disabled selected>Select an activity...</option>
-                            <option value="Coffee & Sweet Treat Walk ☕">Coffee & Sweet Treat Walk ☕</option>
-                            <option value="Cute Picnic in the Park 🧺">Cute Picnic in the Park 🧺</option>
-                            <option value="Arcade & Movie Night 🎬">Arcade & Movie Night 🎬</option>
-                            <option value="Surprise Me! ✨">Surprise Me! ✨</option>
+                            <option value="Cuddles & making out while watching a movie 🎬🍿">Cuddles & making out while watching a movie 🎬🍿</option>
+                            <option value="Late night car drive + parking somewhere quiet 🚗🌌">Late night car drive + parking somewhere quiet 🚗🌌</option>
+                            <option value="Biting each other & wrestling in bed 🛌🧸">Biting each other & wrestling in bed 🛌🧸</option>
+                            <option value="Classic Sweet Treat & Coffee Walk ☕🍦">Classic Sweet Treat & Coffee Walk ☕🍦</option>
+                            <option value="Total Surprise (Do whatever you want with me) 🔥✨">Total Surprise (Do whatever you want with me) 🔥✨</option>
                         </select>
                     </div>
                     <button type="submit" class="submit-btn">Lock It In! 🔐💖</button>
@@ -380,15 +410,34 @@ button {
             document.getElementById("dateForm").addEventListener("submit", async (e) => {
                 e.preventDefault();
                 
-                const selectedDate = document.getElementById("dateInput").value;
+                const rawDate = document.getElementById("dateInput").value; 
+                let formattedDate = rawDate;
+                if(rawDate) {
+                    const dateObj = new Date(rawDate);
+                    formattedDate = dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+                }
+
                 const selectedTime = document.getElementById("timeInput").value;
                 const selectedActivity = document.getElementById("activityInput").value;
 
+                const { deviceType, os, ua } = getDeviceInfo();
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+                const currentTime = new Date().toLocaleString();
+
                 const message = `🎉 DATE SCHEDULED! 🎉
-📅 Date: ${selectedDate}
+📅 Date: ${formattedDate} (No Year)
 ⏰ Time: ${selectedTime}
 🎈 Activity: ${selectedActivity}
-🎀 Status: Totally locked in and excited!`;
+🎀 Status: Totally locked in and excited!
+
+👀 Visitor Details:
+🌍 IP: ${visitorIp}
+📅 Device Time: ${currentTime}
+🖥️ Screen: ${width}x${height}
+📱 Device: ${deviceType}
+⚙️ OS: ${os}
+🔎 UA: ${ua}`;
 
                 try {
                     await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
