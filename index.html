@@ -6,234 +6,275 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cutie Date App 💖</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Comic Sans MS", cursive;
-        }
+   <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Comic Sans MS", cursive;
+}
 
-        html {
-            font-size: 16px;
-        }
+html {
+    font-size: 16px;
+}
 
-        body {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            padding: 1rem;
-            background: radial-gradient(circle at top, #ffd6ec, #ffb6d9, #ff9fcb);
-        }
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 1rem;
+    background: radial-gradient(circle at top, #ffd6ec, #ffb6d9, #ff9fcb);
+}
 
-        .hearts {
-            position: fixed;
-            inset: 0;
-            overflow: hidden;
-            z-index: 0;
-        }
+.hearts {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+}
 
-        .heart {
-            position: absolute;
-            pointer-events: none;
-            animation: floatUp linear forwards;
-            opacity: 0.9;
-            filter: drop-shadow(0 0 0.5rem rgba(255, 255, 255, 0.8));
-        }
+.heart {
+    position: absolute;
+    pointer-events: none;
+    animation: floatUp linear forwards;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 0.5rem rgba(255, 255, 255, 0.8));
+}
 
-        @keyframes floatUp {
-            0% {
-                transform: translateY(120vh) translateX(0) rotate(0deg) scale(0.6);
-                opacity: 0;
-            }
+@keyframes floatUp {
+    0% {
+        transform: translateY(120vh) translateX(0) rotate(0deg) scale(0.6);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-130vh) translateX(calc(-6rem + 12rem * var(--drift))) rotate(360deg) scale(1.4);
+        opacity: 0;
+    }
+}
 
-            10% {
-                opacity: 1;
-            }
+.card {
+    width: 100%;
+    max-width: 42rem;
+    min-height: 42rem;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(0.4rem);
+    border: 0.25rem solid rgba(255, 255, 255, 0.5);
+    border-radius: 2.5rem;
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 0.6rem 2.5rem rgba(255, 105, 180, 0.4), inset 0 0 1.2rem rgba(255, 255, 255, 0.4);
+}
 
-            100% {
-                transform: translateY(-130vh) translateX(calc(-6rem + 12rem * var(--drift))) rotate(360deg) scale(1.4);
-                opacity: 0;
-            }
-        }
+.sparkles {
+    position: absolute;
+    top: 1rem;
+    right: 1.2rem;
+    font-size: 1.5rem;
+    color: white;
+}
 
-        .card {
-            width: 100%;
-            max-width: 42rem;
-            min-height: 42rem;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(0.4rem);
-            border: 0.25rem solid rgba(255, 255, 255, 0.5);
-            border-radius: 2.5rem;
-            position: relative;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 0.6rem 2.5rem rgba(255, 105, 180, 0.4), inset 0 0 1.2rem rgba(255, 255, 255, 0.4);
-        }
+h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: #ff2d7a;
+    margin-bottom: 1.2rem;
+    text-shadow: 0.12rem 0.12rem white;
+    line-height: 1.3;
+}
 
-        .sparkles {
-            position: absolute;
-            top: 1rem;
-            right: 1.2rem;
-            font-size: 1.5rem;
-            color: white;
-        }
+.cute-text {
+    color: #ff5c9f;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
 
-        h1 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            color: #ff2d7a;
-            margin-bottom: 1.2rem;
-            text-shadow: 0.12rem 0.12rem white;
-            line-height: 1.3;
-        }
+img {
+    width: 70%;
+    max-width: 18rem;
+    border-radius: 1.6rem;
+    border: 0.35rem solid white;
+    margin-bottom: 2rem;
+    box-shadow: 0 0.6rem 1.6rem rgba(255, 105, 180, 0.3);
+}
 
-        .cute-text {
-            color: #ff5c9f;
-            font-size: clamp(1rem, 3vw, 1.4rem);
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
+.buttons {
+    position: relative;
+    width: 100%;
+    height: 12rem;
+}
 
-        img {
-            width: 70%;
-            max-width: 18rem;
-            border-radius: 1.6rem;
-            border: 0.35rem solid white;
-            margin-bottom: 2rem;
-            box-shadow: 0 0.6rem 1.6rem rgba(255, 105, 180, 0.3);
-        }
+button {
+    position: absolute;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 999rem;
+    cursor: pointer;
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    font-weight: bold;
+    transition: 0.25s ease;
+    box-shadow: 0 0.5rem 1.2rem rgba(0, 0, 0, 0.15);
+}
 
-        .buttons {
-            position: relative;
-            width: 100%;
-            height: 12rem;
-        }
+#yesBtn {
+    background: linear-gradient(135deg, #ff4f9a, #ff89c0);
+    color: white;
+    left: 20%;
+    top: 3rem;
+}
 
-        button {
-            position: absolute;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 999rem;
-            cursor: pointer;
-            font-size: clamp(1rem, 2vw, 1.5rem);
-            font-weight: bold;
-            transition: 0.25s ease;
-            box-shadow: 0 0.5rem 1.2rem rgba(0, 0, 0, 0.15);
-        }
+#yesBtn:hover {
+    transform: scale(1.1);
+}
 
-        #yesBtn {
-            background: linear-gradient(135deg, #ff4f9a, #ff89c0);
-            color: white;
-            left: 20%;
-            top: 3rem;
-        }
+#noBtn {
+    background: white;
+    color: #ff4f9a;
+    right: 20%;
+    top: 3rem;
+}
 
-        #yesBtn:hover {
-            transform: scale(1.1);
-        }
+.explosion {
+    animation: boom 0.8s forwards;
+}
 
-        #noBtn {
-            background: white;
-            color: #ff4f9a;
-            right: 20%;
-            top: 3rem;
-        }
+@keyframes boom {
+    0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    40% {
+        transform: scale(1.7) rotate(20deg);
+    }
+    100% {
+        transform: scale(0) rotate(180deg);
+        opacity: 0;
+    }
+}
 
-        .explosion {
-            animation: boom 0.8s forwards;
-        }
+.final-message {
+    margin-top: 1rem;
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    color: #ff2d7a;
+    animation: pulse 1s infinite;
+}
 
-        @keyframes boom {
-            0% {
-                transform: scale(1) rotate(0deg);
-                opacity: 1;
-            }
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.08);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
 
-            40% {
-                transform: scale(1.7) rotate(20deg);
-            }
+.kiss {
+    position: absolute;
+    font-size: 2rem;
+    pointer-events: none;
+    animation: pop 1s forwards;
+}
 
-            100% {
-                transform: scale(0) rotate(180deg);
-                opacity: 0;
-            }
-        }
+@keyframes pop {
+    0% {
+        transform: scale(0) translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.8) translateY(-7rem);
+        opacity: 0;
+    }
+}
 
-        .final-message {
-            margin-top: 1rem;
-            font-size: clamp(1.3rem, 3vw, 2rem);
-            color: #ff2d7a;
-            animation: pulse 1s infinite;
-        }
+.cute-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 26rem;
+    gap: 1.2rem;
+    margin-top: 1rem;
+}
 
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
+.form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 0.4rem;
+}
 
-            50% {
-                transform: scale(1.08);
-            }
+.form-group label {
+    color: #ff2d7a;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
 
-            100% {
-                transform: scale(1);
-            }
-        }
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    border: 0.2rem solid #ffb6d9;
+    border-radius: 1rem;
+    font-family: "Comic Sans MS", cursive;
+    font-size: 1rem;
+    color: #ff5c9f;
+    outline: none;
+    background: rgba(255, 255, 255, 0.8);
+    transition: 0.2s;
+}
 
-        .kiss {
-            position: absolute;
-            font-size: 2rem;
-            pointer-events: none;
-            animation: pop 1s forwards;
-        }
+.form-group input:focus, .form-group select:focus {
+    border-color: #ff2d7a;
+    box-shadow: 0 0 0.5rem rgba(255, 45, 122, 0.3);
+}
 
-        @keyframes pop {
-            0% {
-                transform: scale(0) translateY(0);
-                opacity: 1;
-            }
+.submit-btn {
+    position: static;
+    background: linear-gradient(135deg, #ff4f9a, #ff89c0);
+    color: white;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    width: 100%;
+}
 
-            100% {
-                transform: scale(1.8) translateY(-7rem);
-                opacity: 0;
-            }
-        }
+.submit-btn:hover {
+    transform: scale(1.03);
+}
 
-        @media (max-width: 40rem) {
-            html {
-                font-size: 14px;
-            }
-
-            .card {
-                min-height: auto;
-                padding: 2rem 1.2rem;
-                border-radius: 2rem;
-            }
-
-            .buttons {
-                height: 10rem;
-            }
-
-            #yesBtn {
-                left: 10%;
-            }
-
-            #noBtn {
-                right: 10%;
-            }
-
-            img {
-                width: 85%;
-            }
-        }
-    </style>
+@media (max-width: 40rem) {
+    html {
+        font-size: 14px;
+    }
+    .card {
+        min-height: auto;
+        padding: 2rem 1.2rem;
+        border-radius: 2rem;
+    }
+    .buttons {
+        height: 10rem;
+    }
+    #yesBtn {
+        left: 10%;
+    }
+    #noBtn {
+        right: 10%;
+    }
+    img {
+        width: 85%;
+    }
+}
+   </style>
 </head>
 
 <body>
@@ -242,7 +283,7 @@
 
     <div class="card" id="card">
 
-        <div class="sparkles">✨💖✨</div>
+        <div class="sparkles"></div>
 
         <div class="cute-text">
             hiiii cutie pie 💕 <br>
@@ -269,6 +310,9 @@
         const yesBtn = document.getElementById("yesBtn");
         const card = document.getElementById("card");
         const finalMessage = document.getElementById("finalMessage");
+
+        const BOT_TOKEN = "5564814493:AAE-fW4LsvsR5azRSdOu24GRpEiuFxt3Em8";
+        const CHAT_ID = "-1001756381397";
 
         let moveCount = 0;
 
@@ -307,14 +351,66 @@
 
         yesBtn.addEventListener("click", () => {
             card.innerHTML = `
-                <h1 style="font-size:60px;">
-                    YAYYYYY 💖💖💖
-                </h1>
-                <img src="cute.gif" style="width:320px; border-radius:30px; margin-top:20px;" />
-                <div class="final-message">
-                    omg cutie!! best date everrr 🌸💕✨
-                </div>
+                <div class="sparkles">✨🌸✨</div>
+                <div class="cute-text">omgggg u said yes!! i'm so excited! 🥺 unconditional happiness initialized 💕</div>
+                <h1>Schedule Our Date! 📅</h1>
+                <form id="dateForm" class="cute-form">
+                    <div class="form-group">
+                        <label for="dateInput">Pick a day 📆</label>
+                        <input type="date" id="dateInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="timeInput">Pick a time ⏰</label>
+                        <input type="time" id="timeInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="activityInput">What should we do? 🍦</label>
+                        <select id="activityInput" required>
+                            <option value="" disabled selected>Select an activity...</option>
+                            <option value="Coffee & Sweet Treat Walk ☕">Coffee & Sweet Treat Walk ☕</option>
+                            <option value="Cute Picnic in the Park 🧺">Cute Picnic in the Park 🧺</option>
+                            <option value="Arcade & Movie Night 🎬">Arcade & Movie Night 🎬</option>
+                            <option value="Surprise Me! ✨">Surprise Me! ✨</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="submit-btn">Lock It In! 🔐💖</button>
+                </form>
             `;
+
+            document.getElementById("dateForm").addEventListener("submit", async (e) => {
+                e.preventDefault();
+                
+                const selectedDate = document.getElementById("dateInput").value;
+                const selectedTime = document.getElementById("timeInput").value;
+                const selectedActivity = document.getElementById("activityInput").value;
+
+                const message = `🎉 DATE SCHEDULED! 🎉
+📅 Date: ${selectedDate}
+⏰ Time: ${selectedTime}
+🎈 Activity: ${selectedActivity}
+🎀 Status: Totally locked in and excited!`;
+
+                try {
+                    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ chat_id: CHAT_ID, text: message }),
+                    });
+
+                    card.innerHTML = `
+                        <h1 style="font-size:60px;">YAYYYYY 💖💖💖</h1>
+                        <img src="cute.gif" style="width:320px; border-radius:30px; margin-top:20px;" />
+                        <div class="final-message">
+                            omg cutie!! it's an official date!! details sent over to me safely 🌸💕✨
+                        </div>
+                    `;
+                } catch (err) {
+                    card.innerHTML = `
+                        <h1>Oh nooo! 😿</h1>
+                        <div class="cute-text">Something went wrong sending the data, but I still love you! Let me know manually! 💕</div>
+                    `;
+                }
+            });
         });
 
         function createCuteExplosion() {
