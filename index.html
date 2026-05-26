@@ -41,6 +41,7 @@ body {
     animation: floatUp linear forwards;
     opacity: 0.9;
     filter: drop-shadow(0 0 0.5rem rgba(255, 255, 255, 0.8));
+    will-change: transform;
 }
 
 @keyframes floatUp {
@@ -310,6 +311,9 @@ button {
         height: 18rem;
         width: 18rem;
     }
+    .heart {
+        filter: none;
+    }
 }
    </style>
 </head>
@@ -528,7 +532,9 @@ button {
         });
 
         function createCuteExplosion() {
-            for (let i = 0; i < 30; i++) {
+            const isMobile = window.innerWidth <= 640;
+            const count = isMobile ? 12 : 30;
+            for (let i = 0; i < count; i++) {
                 const kiss = document.createElement("div");
                 kiss.className = "kiss";
                 const emojis = ["💖", "✨", "💘", "🎀", "💕", "🌸"];
@@ -549,25 +555,32 @@ button {
             const emojis = ["💖", "💕", "💘", "💗", "💓", "🎀", "✨", "🌸", "🩷", "💞"];
 
             setInterval(() => {
-                for (let i = 0; i < 8; i++) {
+                const isMobile = window.innerWidth <= 640;
+                const spawnCount = isMobile ? 1 : 4;
+
+                for (let i = 0; i < spawnCount; i++) {
                     const heart = document.createElement("div");
                     heart.className = "heart";
                     heart.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
                     heart.style.left = Math.random() * 100 + "vw";
-                    const size = 20 + Math.random() * 50;
+                    const size = isMobile ? (15 + Math.random() * 25) : (20 + Math.random() * 50);
                     heart.style.fontSize = size + "px";
-                    const duration = 4 + Math.random() * 6;
+                    const duration = 5 + Math.random() * 5;
                     heart.style.animationDuration = duration + "s";
                     heart.style.setProperty("--drift", Math.random());
-                    heart.style.opacity = Math.random();
-                    heart.style.filter = `blur(${Math.random() * 1.5}px) drop-shadow(0 0 14px rgba(255,255,255,0.9))`;
+                    heart.style.opacity = Math.random() * 0.7 + 0.2;
+                    
+                    if (!isMobile) {
+                        heart.style.filter = `blur(${Math.random() * 1.5}px) drop-shadow(0 0 14px rgba(255,255,255,0.9))`;
+                    }
+
                     heartsContainer.appendChild(heart);
 
                     setTimeout(() => {
                         heart.remove();
                     }, duration * 1000);
                 }
-            }, 120);
+            }, 350);
         }
 
         createFloatingHearts();
